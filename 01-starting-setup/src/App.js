@@ -5,7 +5,7 @@ const App = () => {
   const expenses = [
     {
       id: "e1",
-      title: "Toilet Paper",
+      title: "Cheese",
       amount: 94.12,
       date: new Date(2020, 7, 14),
     },
@@ -23,10 +23,16 @@ const App = () => {
       date: new Date(2021, 5, 12),
     },
   ];
+
+  const addExpenseHandler = (expense) => {
+    console.log("In App.js");
+    console.log(expense);
+  };
+
   return (
     <div>
       <h2>Let's get started! JSX looks easy</h2>
-      <NewExpense />
+      <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses items={expenses} />
     </div>
   );
