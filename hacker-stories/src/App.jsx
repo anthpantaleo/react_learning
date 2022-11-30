@@ -42,26 +42,41 @@ function App() {
         {welcome.greeting}, {welcome.title}
       </h1>
 
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <Search />
 
       <hr />
-      <ul>
-        {list.map((item) => {
-          return (
-            <li key={item.objectID}>
-              <span>
-                <a href={item.url} target="_blank">
-                  {item.title}
-                </a>
-              </span>
-              <span> - {item.author}</span>
-              <span> - {item.num_comments}</span>
-              <span> - {item.points}</span>
-            </li>
-          );
-        })}
-      </ul>
+
+      <List />
+    </div>
+  );
+}
+
+function List() {
+  return (
+    <ul>
+      {list.map((item) => {
+        return (
+          <li key={item.objectID}>
+            <span>
+              <a href={item.url} target="_blank">
+                {item.title}
+              </a>
+            </span>
+            <span> - {item.author}</span>
+            <span> - {item.num_comments}</span>
+            <span> - {item.points}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function Search() {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" />
     </div>
   );
 }
