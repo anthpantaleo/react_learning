@@ -52,7 +52,7 @@ const App = () => {
         {welcome.greeting}, {welcome.title}
       </h1>
 
-      <Search onSearch={handleSearch} searchTerm={searchTerm} />
+      <Search onSearch={handleSearch} search={searchTerm} />
 
       <hr />
 
@@ -104,9 +104,10 @@ const Search = (props) => {
         type="text"
         onChange={props.onSearch}
         onBlur={handleBlur}
+        value={props.search}
       />
       <p>
-        Searching for <strong>{props.searchTerm}</strong>
+        Searching for <strong>{props.search}</strong>
       </p>
     </div>
   );
