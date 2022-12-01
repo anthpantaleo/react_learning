@@ -36,9 +36,15 @@ const App = () => {
     },
   ];
 
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   const handleSearch = (event) => {
-    console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
+
+  const searchedStories = stories.filter((story) => {
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div>
@@ -46,11 +52,11 @@ const App = () => {
         {welcome.greeting}, {welcome.title}
       </h1>
 
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
 
       <hr />
 
-      <List list={stories} />
+      <List list={searchedStories} />
     </div>
   );
 };
@@ -81,14 +87,14 @@ const Item = (props) => {
 };
 
 const Search = (props) => {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  // const handleChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  //   props.onSearch(event);
+  // };
 
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-    props.onSearch(event);
+  const handleBlur = (event) => {
+    console.log("unfocussed");
   };
-
-  const handleBlur = (event) => {};
 
   return (
     <div>
@@ -96,11 +102,11 @@ const Search = (props) => {
       <input
         id="search"
         type="text"
-        onChange={handleChange}
+        onChange={props.onSearch}
         onBlur={handleBlur}
-      />{" "}
+      />
       <p>
-        Searching for <strong>{searchTerm}</strong>
+        Searching for <strong>{props.searchTerm}</strong>
       </p>
     </div>
   );
