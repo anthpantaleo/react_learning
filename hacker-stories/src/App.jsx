@@ -77,14 +77,16 @@ const Item = (props) => {
 };
 
 const Search = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   const handleChange = (event) => {
-    console.log(event);
-    console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
   const handleBlur = (event) => {
     console.log("on blur");
   };
+
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -93,7 +95,10 @@ const Search = () => {
         type="text"
         onChange={handleChange}
         onBlur={handleBlur}
-      />
+      />{" "}
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
     </div>
   );
 };
