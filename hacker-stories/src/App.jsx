@@ -8,34 +8,34 @@ const welcome = {
   title: "React",
 };
 
-const list = [
-  {
-    title: "React",
-    url: "https://reactjs.org",
-    author: "Jordan Walke",
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: "Redux",
-    url: "https://redux.js.org",
-    author: "Dan Abramov, Andrew Clark",
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-  {
-    title: "Google",
-    url: "https://google.ca",
-    author: "AI",
-    num_comments: 1000000,
-    points: 0,
-    objectID: 2,
-  },
-];
+const App = () => {
+  const stories = [
+    {
+      title: "React",
+      url: "https://reactjs.org",
+      author: "Jordan Walke",
+      num_comments: 3,
+      points: 4,
+      objectID: 0,
+    },
+    {
+      title: "Redux",
+      url: "https://redux.js.org",
+      author: "Dan Abramov, Andrew Clark",
+      num_comments: 2,
+      points: 5,
+      objectID: 1,
+    },
+    {
+      title: "Google",
+      url: "https://google.ca",
+      author: "AI",
+      num_comments: 1000000,
+      points: 0,
+      objectID: 2,
+    },
+  ];
 
-function App() {
   return (
     <div>
       <h1>
@@ -46,39 +46,56 @@ function App() {
 
       <hr />
 
-      <List />
+      <List list={stories} />
     </div>
   );
-}
+};
 
-function List() {
+const List = (props) => {
   return (
     <ul>
-      {list.map((item) => {
-        return (
-          <li key={item.objectID}>
-            <span>
-              <a href={item.url} target="_blank">
-                {item.title}
-              </a>
-            </span>
-            <span> - {item.author}</span>
-            <span> - {item.num_comments}</span>
-            <span> - {item.points}</span>
-          </li>
-        );
-      })}
+      {props.list.map((item) => (
+        <Item key={item.objectID} item={item} />
+      ))}
     </ul>
   );
-}
+};
 
-function Search() {
+const Item = (props) => {
+  return (
+    <li>
+      <span>
+        <a href={props.item.url} target="_blank">
+          {props.item.title}
+        </a>
+      </span>
+      <span> - {props.item.author}</span>
+      <span> - {props.item.num_comments} comments</span>
+      <span> - {props.item.points} points</span>
+    </li>
+  );
+};
+
+const Search = () => {
+  const handleChange = (event) => {
+    console.log(event);
+    console.log(event.target.value);
+  };
+
+  const handleBlur = (event) => {
+    console.log("on blur");
+  };
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
+      <input
+        id="search"
+        type="text"
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
     </div>
   );
-}
+};
 
 export default App;
