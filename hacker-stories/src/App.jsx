@@ -5,7 +5,7 @@ import * as React from "react";
 
 const welcome = {
   greeting: "Hey",
-  title: "React",
+  title: "React!",
 };
 
 const useStorageState = (key, initialState) => {
@@ -63,7 +63,12 @@ const App = () => {
         {welcome.greeting}, {welcome.title}
       </h1>
 
-      <Search onSearch={handleSearch} search={searchTerm} />
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
 
       <hr />
 
@@ -97,7 +102,7 @@ const Item = ({ item }) => {
   );
 };
 
-const Search = ({ onSearch, search }) => {
+const InputWithLabel = ({ id, label, value, type = "text", onInputChange }) => {
   // const handleChange = (event) => {
   //   setSearchTerm(event.target.value);
   //   props.onSearch(event);
@@ -109,16 +114,16 @@ const Search = ({ onSearch, search }) => {
 
   return (
     <div>
-      <label htmlFor="search">Search: </label>
+      <label htmlFor={id}>{label}:</label>
       <input
-        id="search"
-        type="text"
-        onChange={onSearch}
+        id={id}
+        type={type}
+        onChange={onInputChange}
+        value={value}
         onBlur={handleBlur}
-        value={search}
       />
       <p>
-        Searching for <strong>{search}</strong>
+        Searching for <strong>{value}</strong>
       </p>
     </div>
   );
