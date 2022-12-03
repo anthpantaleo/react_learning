@@ -3,6 +3,33 @@
 // import "./App.css";
 import * as React from "react";
 
+const initialStories = [
+  {
+    title: "React",
+    url: "https://reactjs.org",
+    author: "Jordan Walke",
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: "Redux",
+    url: "https://redux.js.org",
+    author: "Dan Abramov, Andrew Clark",
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  },
+  {
+    title: "Google",
+    url: "https://google.ca",
+    author: "AI",
+    num_comments: 1000000,
+    points: 0,
+    objectID: 2,
+  },
+];
+
 const welcome = {
   greeting: "Hey",
   title: "React!",
@@ -20,34 +47,17 @@ const useStorageState = (key, initialState) => {
 };
 
 const App = () => {
-  const stories = [
-    {
-      title: "React",
-      url: "https://reactjs.org",
-      author: "Jordan Walke",
-      num_comments: 3,
-      points: 4,
-      objectID: 0,
-    },
-    {
-      title: "Redux",
-      url: "https://redux.js.org",
-      author: "Dan Abramov, Andrew Clark",
-      num_comments: 2,
-      points: 5,
-      objectID: 1,
-    },
-    {
-      title: "Google",
-      url: "https://google.ca",
-      author: "AI",
-      num_comments: 1000000,
-      points: 0,
-      objectID: 2,
-    },
-  ];
-
   const [searchTerm, setSearchTerm] = useStorageState("searchValue", "");
+
+  const [stories, setStories] = React.useState(initialStories);
+
+  const handleRemoveStory = (item) => {
+    const newStories = stories.filter(
+      (story) => item.objectID !== story.objectID
+    );
+
+    setStories(newStories);
+  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -73,22 +83,25 @@ const App = () => {
 
       <hr />
 
-      <List list={searchedStories} />
+      <List list={searchedStories} onRemoveItem={handleRemoveStory} />
     </div>
   );
 };
 
-const List = ({ list }) => {
+const List = ({ list, onRemoveItem }) => {
   return (
     <ul>
       {list.map((item) => (
-        <Item key={item.objectID} item={item} />
+        <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
       ))}
     </ul>
   );
 };
 
-const Item = ({ item }) => {
+const Item = ({ item, onRemoveItem }) => {
+  const handleRemoveItem = () => {
+    onRemoveItem(item);
+  };
   return (
     <li>
       <span>
@@ -98,7 +111,12 @@ const Item = ({ item }) => {
       </span>
       <span> - {item.author}</span>
       <span> - {item.num_comments} comments</span>
-      <span> - {item.points} points</span>
+      <span> - {item.points} points - </span>
+      <span>
+        <button type="button" onClick={handleRemoveItem}>
+          Dismiss
+        </button>
+      </span>
     </li>
   );
 };
