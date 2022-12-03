@@ -108,6 +108,7 @@ const InputWithLabel = ({
   value,
   type = "text",
   onInputChange,
+  isFocused,
   children,
 }) => {
   // const handleChange = (event) => {
@@ -120,19 +121,20 @@ const InputWithLabel = ({
   };
 
   return (
-    <div>
+    <>
       <label htmlFor={id}>{children}</label>
       <input
         id={id}
         type={type}
-        onChange={onInputChange}
         value={value}
         onBlur={handleBlur}
+        onChange={onInputChange}
+        autoFocus={isFocused}
       />
       <p>
         Searching for <strong>{value}</strong>
       </p>
-    </div>
+    </>
   );
 };
 
