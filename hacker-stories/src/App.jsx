@@ -33,10 +33,19 @@ const initialStories = [
     objectID: 2,
   },
 ];
+
 const getAsyncStories = () =>
   new Promise((resolve) =>
     setTimeout(() => resolve({ data: { stories: initialStories } }), 1000)
   );
+
+const storiesReducer = (state, action) => {
+  if (action.type === "SET_STORIES") {
+    return action.payload;
+  } else {
+    throw new Error();
+  }
+};
 
 const useStorageState = (key, initialState) => {
   const [value, setValue] = React.useState(
@@ -51,7 +60,8 @@ const useStorageState = (key, initialState) => {
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useStorageState("searchValue", "");
-  const [stories, setStories] = React.useState([]);
+  // const [stories, setStories] = React.useState([]);
+  const [stories, dispatchStories] = React.useReducer(storiesReducer, []);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -59,7 +69,8 @@ const App = () => {
     setIsLoading(true);
     getAsyncStories()
       .then((result) => {
-        setStories(result.data.stories);
+        dispatchStories({ type: "SET_STORIES", payload: result.data.stories });
+        // setStories(result.data.stories);
         setIsLoading(false);
       })
       .catch(() => setIsError(true));
@@ -69,8 +80,8 @@ const App = () => {
     const newStories = stories.filter(
       (story) => item.objectID !== story.objectID
     );
-
-    setStories(newStories);
+    dispatchStories({ type: "SET_STORIES", payload: newStories });
+    // setStories(newStories);
   };
 
   const handleSearch = (event) => {
