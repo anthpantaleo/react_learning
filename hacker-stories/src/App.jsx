@@ -3,6 +3,10 @@
 // import "./App.css";
 import * as React from "react";
 
+const welcome = {
+  greeting: "Hey",
+  title: "React!",
+};
 const initialStories = [
   {
     title: "React",
@@ -29,11 +33,10 @@ const initialStories = [
     objectID: 2,
   },
 ];
-
-const welcome = {
-  greeting: "Hey",
-  title: "React!",
-};
+const getAsyncStories = () =>
+  new Promise((resolve) =>
+    setTimeout(() => resolve({ data: { stories: initialStories } }), 1000)
+  );
 
 const useStorageState = (key, initialState) => {
   const [value, setValue] = React.useState(
@@ -49,7 +52,13 @@ const useStorageState = (key, initialState) => {
 const App = () => {
   const [searchTerm, setSearchTerm] = useStorageState("searchValue", "");
 
-  const [stories, setStories] = React.useState(initialStories);
+  const [stories, setStories] = React.useState([]);
+
+  React.useEffect(() => {
+    getAsyncStories().then((result) => {
+      setStories(result.data.stories);
+    });
+  }, []);
 
   const handleRemoveStory = (item) => {
     const newStories = stories.filter(
