@@ -30,11 +30,13 @@ const initialStories = [
   },
 ];
 
-const getAsyncStories = () =>
-  new Promise((resolve) =>
-    setTimeout(() => resolve({ data: { stories: initialStories } }), 1000)
-  );
+// const getAsyncStories = () =>
+//   new Promise((resolve) =>
+//     setTimeout(() => resolve({ data: { stories: initialStories } }), 1000)
+//   );
 // new Promise((resolve, reject) => setTimeout(reject, 2000)); this can cause errors
+const API_ENDPOINT = `https:/hn.algolia.com/api/v1/search?query=`;
+
 const storiesReducer = (state, action) => {
   switch (action.type) {
     case "STORIES_FETCH_INIT":
@@ -110,11 +112,14 @@ const App = () => {
 
   React.useEffect(() => {
     dispatchStories({ type: "STORIES_FETCH_INIT" });
-    getAsyncStories()
+    // getAsyncStories()
+    fetch(`${API_ENDPOINT}react`)
+      .then((response) => response.json())
       .then((result) => {
         dispatchStories({
           type: "STORIES_FETCH_SUCCESS",
-          payload: result.data.stories,
+          payload: result.hits,
+          // payload: result.data.stories,
         });
         // setStories(result.data.stories);
         // setIsLoading(false);
@@ -140,7 +145,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Hacker Stories</h1>
+      <h1>Hacker Stories on React</h1>
 
       <InputWithLabel
         id="search"
