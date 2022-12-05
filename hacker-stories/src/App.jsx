@@ -53,10 +53,13 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useStorageState("searchValue", "");
 
   const [stories, setStories] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setIsLoading(true);
     getAsyncStories().then((result) => {
       setStories(result.data.stories);
+      setIsLoading(false);
     });
   }, []);
 
@@ -75,7 +78,9 @@ const App = () => {
   const searchedStories = stories.filter((story) => {
     return story.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div>
       <h1>
