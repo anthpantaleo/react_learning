@@ -99,7 +99,7 @@ const useStorageState = (key, initialState) => {
 };
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useStorageState("searchValue", "");
+  const [searchTerm, setSearchTerm] = useStorageState("searchValue", "React");
   // const [stories, setStories] = React.useState([]);
   const [stories, dispatchStories] = React.useReducer(storiesReducer, {
     data: [],
@@ -111,9 +111,13 @@ const App = () => {
   // const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
+    // If `searchTerm` is not present
+    // e.g null, empty string, undefined
+    // do nothing
+    if (!searchTerm) return;
     dispatchStories({ type: "STORIES_FETCH_INIT" });
     // getAsyncStories()
-    fetch(`${API_ENDPOINT}react`)
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then((response) => response.json())
       .then((result) => {
         dispatchStories({
@@ -125,7 +129,7 @@ const App = () => {
         // setIsLoading(false);
       })
       .catch(() => dispatchStories({ type: "STORIES_FETCH_FAILURE" }));
-  }, []);
+  }, [searchTerm]);
 
   const handleRemoveStory = (item) => {
     // const newStories = stories.filter(
@@ -139,9 +143,9 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const searchedStories = stories.data.filter((story) =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const searchedStories = stories.data.filter((story) =>
+  //   story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <div>
@@ -160,7 +164,7 @@ const App = () => {
       {stories.isLoading ? (
         <>Loading...</>
       ) : (
-        <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+        <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
     </div>
   );
@@ -224,7 +228,7 @@ const InputWithLabel = ({
         type={type}
         value={value}
         onBlur={handleBlur}
-        onChange={onInputChange}
+        onInput={onInputChange}
         autoFocus={isFocused}
       />
       <p>
