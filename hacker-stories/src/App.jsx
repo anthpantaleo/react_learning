@@ -109,6 +109,26 @@ const App = () => {
 
   // const [isLoading, setIsLoading] = React.useState(false);
   // const [isError, setIsError] = React.useState(false);
+  const handleFetchStories = React.useCallback(() => {
+    if (!searchTerm) return;
+
+    dispatchStories({ type: "STORIES_FETCH_INIT" });
+    fetch(`${API_ENDPOINT}${searchTerm}`)
+      .then((response) => response.json())
+      .then((result) => {
+        dispatchStories({
+          type: "STORIES_FETCH_SUCCESS",
+          payload: result.hits,
+        });
+      })
+      .catch(() => {
+        dispatchStories({ type: "STORIES_FETCH_FAILURE" });
+      }, [searchTerm]);
+
+    React.useEffect(() => {
+      handleFetchStories();
+    }, [handleFetchStories]);
+  });
 
   React.useEffect(() => {
     // If `searchTerm` is not present
